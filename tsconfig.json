@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": ["ESNext", "ESNext.AsyncIterable", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
+    "jsxFactory": "VueTsxSupport",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "noEmit": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"]
+    },
+    "typeRoots": ["./node_modules/@types", "./types"],
+    "types": ["@types/node", "@nuxt/types", "@nuxtjs/axios"]
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.vue",
+    "./**/*.tsx",
+    "node_modules/vue-tsx-support/enable-check.d.ts"
+  ],
+  "exclude": ["node_modules", ".nuxt", "dist"]
+}
