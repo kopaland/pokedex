@@ -12,7 +12,7 @@ export default defineComponent({
     }
 
     return () => (
-      <div class=" relative inline-block text-left dropdown">
+      <div class="relative inline-block text-left dropdown">
         <span class="rounded-md shadow-sm">
           <button
             class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800"
@@ -36,7 +36,7 @@ export default defineComponent({
             </svg>
           </button>
         </span>
-        <div class="opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95">
+        <div class="relative z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95">
           <div
             class="absolute sm:right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
             aria-labelledby="headlessui-menu-button-1"

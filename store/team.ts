@@ -3,7 +3,7 @@ import { StateStore, IPokemonData, IPokemonTeamStore } from '~/types'
 
 type OrderMutation = {
   id: number
-  upOrDown: -1 | 1
+  plusOrMinus: -1 | 1
 }
 
 export const state = () =>
@@ -36,18 +36,30 @@ export const mutations: MutationTree<StateStore['team']> = {
   },
   REMOVE_POKEMON_TO_TEAM: (state, id: number) => {
     const index = state.pokemons.findIndex((p) => p.id === id)
-    state.pokemons[index].quantity--
-    if (state.pokemons[index].quantity === 0) state.pokemons.splice(index, 1)
+    state.pokemons.splice(index, 1)
     updateLocalStorage(state.pokemons)
   },
   UPDATE_ORDER_POKEMON_TO_TEAM: (state, order: OrderMutation) => {
     const index = state.pokemons.findIndex((p) => p.id === order.id)
     if (index !== -1)
       state.pokemons.splice(
-        index - order.upOrDown,
+        index - order.plusOrMinus,
         0,
         state.pokemons.splice(index, 1)[0]
       )
+    updateLocalStorage(state.pokemons)
+  },
+  UPDATE_POKEMON_QUANTITY_TO_TEAM: (state, order: OrderMutation) => {
+    const index = state.pokemons.findIndex((p) => p.id === order.id)
+    switch (order.plusOrMinus) {
+      case -1:
+        if (state.pokemons[index].quantity > 1) state.pokemons[index].quantity--
+        else state.pokemons.splice(index, 1)
+        break
+      case 1:
+        state.pokemons[index].quantity++
+        break
+    }
     updateLocalStorage(state.pokemons)
   },
   RECOVER_BACKUP: (state, backup: IPokemonTeamStore[]) => {

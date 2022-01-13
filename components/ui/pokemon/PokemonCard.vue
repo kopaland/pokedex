@@ -13,6 +13,8 @@ import { pokemonConverter } from '~/components/composables/converters/pokemonCon
 import { IPokemonTeamStore, StateStore } from '~/types'
 import { PokemonsProvider } from '~/layouts/default.vue'
 
+import IncremenDecrementButtons from '@/components/ui/IncremenDecrementButtons.vue'
+
 export default defineComponent({
   name: 'UIPokemonCard',
   props: {
@@ -38,19 +40,24 @@ export default defineComponent({
         return pokemonConverter(statePokemon.data).pokemonCard
       } else return props.pokemon
     })
-    const position = computed(() => {
+    const disabled = computed(() => {
       return {
-        isFirst:
+        plus:
           store.state.team.pokemons.findIndex(
             (p) => p.id === pokemon.value?.id
           ) === 0,
-        isLast:
+        minus:
           store.state.team.pokemons.findIndex(
             (p) => p.id === pokemon.value?.id
           ) ===
           store.state.team.pokemons.length - 1,
       }
     })
+    const quantity = computed(
+      () =>
+        store.state.team.pokemons.find((p) => p.id === pokemon.value?.id)
+          ?.quantity
+    )
 
     function setPokemonStore() {
       store.commit('pokemon/SET_POKEMON', statePokemon.data)
@@ -60,10 +67,17 @@ export default defineComponent({
       store.commit('team/ADD_POKEMON_TO_TEAM', pokemon.value)
     }
 
-    function updatePosition(upOrDown: -1 | 1) {
+    function updatePosition(plusOrMinus: -1 | 1) {
       store.commit('team/UPDATE_ORDER_POKEMON_TO_TEAM', {
         id: props.pokemon?.id,
-        upOrDown,
+        plusOrMinus,
+      })
+    }
+
+    function updateQuantity(plusOrMinus: -1 | 1) {
+      store.commit('team/UPDATE_POKEMON_QUANTITY_TO_TEAM', {
+        id: props.pokemon?.id,
+        plusOrMinus,
       })
     }
 
@@ -119,48 +133,21 @@ export default defineComponent({
                 </button>
               </div>
             ) : (
-              <div class="p-4 flex justify-between">
-                <p>Position</p>
-                <div class="flex">
-                  <button
-                    disabled={position.value.isFirst}
-                    type="button"
-                    class="bg-green-600 p-1.5 font-bold rounded"
-                    onClick={() => updatePosition(1)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    disabled={position.value.isLast}
-                    type="button"
-                    onClick={() => updatePosition(-1)}
-                    class="bg-yellow-600 p-1.5 font-bold rounded"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
+              <div>
+                <IncremenDecrementButtons
+                  disabled={disabled.value}
+                  onClickPlusOrMinus={updatePosition}
+                >
+                  <p slot="title">Position</p>
+                </IncremenDecrementButtons>
+                <IncremenDecrementButtons onClickPlusOrMinus={updateQuantity}>
+                  <p slot="title">Quantité</p>
+                  <input
+                    value={quantity.value}
+                    disabled
+                    class="w-8 text-center"
+                  />
+                </IncremenDecrementButtons>
               </div>
             )}
           </div>
