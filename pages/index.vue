@@ -1,35 +1,36 @@
 <script lang="tsx">
 import {
   defineComponent,
-  provide,
   reactive,
+  ref,
   toRefs,
   useContext,
+  useRoute,
 } from '@nuxtjs/composition-api'
 import { useGlobal } from '~/components/composables/utils/useGlobal'
 import { useWrapper } from '~/components/composables/utils/useWrapper'
-import { PokemonsProvider } from '~/layouts/default.vue'
 
 import PokemonCard from '@/components/ui/pokemon/PokemonCard.vue'
 
 export default defineComponent({
   name: 'HomeView',
   setup() {
+    const route = useRoute()
     const { $pokenodeApi } = useContext()
     const pokemons = reactive({
       ids: [] as number[],
       lastIds: [] as number[],
-      search: '',
       offset: 0,
       limit: 10,
       total: 0,
       loading: false,
     })
+    const searchTerm = ref('')
     const { debounceValue, debounceListener } =
       useGlobal().debounceInput<string>(1000, (value: string) => {
         pokemons.loading = true
         if (value) {
-          pokemons.search = value
+          searchTerm.value = value
           $pokenodeApi.pokemon
             .getPokemonByName(value)
             .then((data) => (pokemons.ids = [data.id]))
@@ -38,7 +39,7 @@ export default defineComponent({
             })
             .finally(() => (pokemons.loading = false))
         } else {
-          pokemons.search = ''
+          searchTerm.value = ''
           resetPokemons()
         }
       })
@@ -51,7 +52,8 @@ export default defineComponent({
             document.documentElement
           if (
             scrollTop + clientHeight >= scrollHeight - 5 &&
-            !pokemons.loading
+            !pokemons.loading &&
+            route.value.name === 'index'
           ) {
             pokemons.offset = pokemons.offset + pokemons.limit
             getListPokemons()
@@ -81,12 +83,11 @@ export default defineComponent({
 
     getListPokemons()
 
-    provide(PokemonsProvider, pokemons)
-
     return {
       ...toRefs(pokemons),
       debounceValue,
       debounceListener,
+      searchTerm,
     }
   },
   render() {
@@ -103,7 +104,7 @@ export default defineComponent({
         />
         <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {this.ids.map((id) => {
-            return <PokemonCard idPokemon={id} />
+            return <PokemonCard idPokemon={id} searchTerm={this.searchTerm} />
           })}
         </div>
       </div>

@@ -1,13 +1,14 @@
 import { reactive, useContext } from '@nuxtjs/composition-api'
-import { NamedAPIResource, Pokemon, PokemonSpecies } from 'pokenode-ts'
+import { NamedAPIResource, PokemonSpecies } from 'pokenode-ts'
 import { useWrapper } from '~/components/composables/utils/useWrapper'
-import { StateApi } from '~/types'
+import { pokemonConverter } from '~/components/composables/converters/pokemonConverter'
+import { IPokemonData, StateApi } from '~/types'
 
 export function usePokemons() {
   const { $pokenodeApi } = useContext()
   const { getIdFromUrl } = useWrapper()
 
-  const statePokemon = reactive<StateApi<Pokemon>>({
+  const statePokemon = reactive<StateApi<IPokemonData>>({
     loading: false,
     data: undefined,
     error: {},
@@ -19,23 +20,27 @@ export function usePokemons() {
     error: {},
   })
 
-  async function getPokemonById(id: number) {
-    await $pokenodeApi.pokemon
-      .getPokemonById(id)
-      .then((data) => {
-        statePokemon.data = data
-      })
-      .catch((error) => {
-        statePokemon.error = error
-      })
-      .finally(() => (statePokemon.loading = false))
+  function getPokemonById(id: number) {
+    return new Promise<IPokemonData>((resolve, reject) => {
+      $pokenodeApi.pokemon
+        .getPokemonById(id)
+        .then((data) => {
+          statePokemon.data = pokemonConverter(data).pokemonData
+          resolve(statePokemon.data)
+        })
+        .catch((error) => {
+          statePokemon.error = error
+          reject(error)
+        })
+        .finally(() => (statePokemon.loading = false))
+    })
   }
 
   async function getPokemonByName(name: string) {
     await $pokenodeApi.pokemon
       .getPokemonByName(name)
       .then((data) => {
-        statePokemon.data = data
+        statePokemon.data = pokemonConverter(data).pokemonData
       })
       .catch((error) => {
         statePokemon.error = error
@@ -53,28 +58,32 @@ export function usePokemons() {
     }
   }
 
-  async function getPokemonSpeciesById(id: number) {
-    await $pokenodeApi.pokemon
-    .getPokemonSpeciesById(id)
-    .then((data) => {
-      statePokemonSpecies.data = data
+  function getPokemonSpeciesById(id: number) {
+    return new Promise<PokemonSpecies>((resolve, reject) => {
+      $pokenodeApi.pokemon
+        .getPokemonSpeciesById(id)
+        .then((data) => {
+          statePokemonSpecies.data = data
+          resolve(data)
+        })
+        .catch((error) => {
+          statePokemonSpecies.error = error
+          reject(error)
+        })
+        .finally(() => (statePokemonSpecies.loading = false))
     })
-    .catch((error) => {
-      statePokemonSpecies.error = error
-    })
-    .finally(() => (statePokemonSpecies.loading = false))
   }
 
   async function getPokemonSpeciesByName(name: string) {
     await $pokenodeApi.pokemon
-    .getPokemonSpeciesByName(name)
-    .then((data) => {
-      statePokemonSpecies.data = data
-    })
-    .catch((error) => {
-      statePokemonSpecies.error = error
-    })
-    .finally(() => (statePokemonSpecies.loading = false))
+      .getPokemonSpeciesByName(name)
+      .then((data) => {
+        statePokemonSpecies.data = data
+      })
+      .catch((error) => {
+        statePokemonSpecies.error = error
+      })
+      .finally(() => (statePokemonSpecies.loading = false))
   }
 
   return {

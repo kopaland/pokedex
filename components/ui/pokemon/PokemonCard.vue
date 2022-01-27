@@ -2,16 +2,13 @@
 import {
   computed,
   defineComponent,
-  inject,
   PropType,
   useContext,
   useStore,
   watch,
 } from '@nuxtjs/composition-api'
 import { usePokemons } from '~/components/composables/api/usePokemons'
-import { pokemonConverter } from '~/components/composables/converters/pokemonConverter'
 import { IPokemonTeamStore, StateStore } from '~/types'
-import { PokemonsProvider } from '~/layouts/default.vue'
 
 import IncremenDecrementButtons from '@/components/ui/IncremenDecrementButtons.vue'
 
@@ -23,21 +20,20 @@ export default defineComponent({
       type: Object as PropType<IPokemonTeamStore | undefined>,
       default: undefined,
     },
+    searchTerm: { type: String, default: '' },
   },
   setup(props) {
     const store = useStore<StateStore>()
     const { route } = useContext()
     const { getPokemonById, statePokemon } = usePokemons()
-    const pokemonsProvide = inject(PokemonsProvider)
     const showCard = computed(() => {
-      if (pokemonsProvide?.search)
-        return statePokemon.data?.name.includes(pokemonsProvide.search)
+      if (props.searchTerm)
+        return statePokemon.data?.name.includes(props.searchTerm)
       return true
     })
     const pokemon = computed(() => {
       if (statePokemon.data) {
-        // store.commit('pokemon/ADD_POKEMON_TO_CACHE', statePokemon.data)
-        return pokemonConverter(statePokemon.data).pokemonCard
+        return statePokemon.data
       } else return props.pokemon
     })
     const disabled = computed(() => {
@@ -61,6 +57,7 @@ export default defineComponent({
 
     function setPokemonStore() {
       store.commit('pokemon/SET_POKEMON', statePokemon.data)
+      store.commit('pokemon/ADD_POKEMON_TO_CACHE', statePokemon.data)
     }
 
     function addToTeam() {

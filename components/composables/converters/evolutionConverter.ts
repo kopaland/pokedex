@@ -1,11 +1,12 @@
-import { ChainLink, EvolutionChain, Pokemon, PokemonClient } from 'pokenode-ts'
+import { ChainLink, EvolutionChain, PokemonClient } from 'pokenode-ts'
 import _ from 'lodash'
+import { IPokemonBase } from '~/types';
 import { pokemonConverter } from '~/components/composables/converters/pokemonConverter'
 
 export function evolutionConverter(
   evolution: EvolutionChain,
   pokemonName: string,
-  cache: Pokemon[]
+  cache: IPokemonBase[]
 ) {
 const pokenodeApi = new PokemonClient()
 
@@ -28,11 +29,11 @@ const pokenodeApi = new PokemonClient()
     ].map(async (name) => {
       let findedPokemon = cache.find((p) => p.name === name)
       if (!findedPokemon) {
-        findedPokemon = await pokenodeApi.getPokemonByName(name)
+        findedPokemon = await pokenodeApi.getPokemonByName(name).then(pokemon => pokemonConverter(pokemon).pokemonData)
       }
       return {
         current: currentPokemon?.name === name,
-        ...pokemonConverter(findedPokemon).pokemonCard,
+        ...findedPokemon as IPokemonBase
       }
     }))
   }

@@ -1,11 +1,19 @@
-import { Pokemon } from 'pokenode-ts'
+import { Pokemon } from "pokenode-ts";
 
-export interface IPokemonData {
+export interface IPokemonBase {
   id?: number
   name: string
   evolveOrder: string
   imageSrc: string | null
   types: string[]
+  stats: Pokemon['stats']
+}
+
+export interface IPokemonEvolution extends IPokemonBase {
+  current: boolean
+}
+export interface IPokemonData extends IPokemonBase {
+  evolutions: IPokemonEvolution[]
 }
 
 export interface StateApi<T> {
@@ -14,23 +22,18 @@ export interface StateApi<T> {
   error?: any
 }
 
-export interface IPokemonCard extends IPokemonData {
+export interface IPokemonCard extends IPokemonBase {
 }
 
-
-export interface IPokemonEvolution extends IPokemonData {
-  current: boolean
-}
-
-export interface IPokemonTeamStore extends IPokemonData {
+export interface IPokemonTeamStore extends IPokemonBase {
   quantity: number
   position: number
 }
 
 export interface StateStore {
   pokemon: {
-    data?: Pokemon
-    cached: Pokemon[]
+    data?: IPokemonData
+    cached: IPokemonBase[]
   }
   team: {
     pokemons: IPokemonTeamStore[]

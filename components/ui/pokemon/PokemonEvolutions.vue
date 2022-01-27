@@ -3,6 +3,7 @@ import {
   defineComponent,
   ref,
   useContext,
+  useFetch,
   useStore,
 } from '@nuxtjs/composition-api'
 import { EvolutionChain } from 'pokenode-ts'
@@ -28,10 +29,23 @@ export default defineComponent({
     const store = useStore<StateStore>()
     const evolutions = ref<IPokemonEvolution[]>([])
 
-    $axios.$get<EvolutionChain>(props.evolutionUrl).then((data) => {
-      evolutionConverter(data, props.pokemonName, store.state.pokemon.cached)
-        .getEvolutions()
-        .then((e) => evolutions.value.push(...e))
+    useFetch(async () => {
+      if (!store.state.pokemon.data?.evolutions.length) {
+        const evolutionChain = await $axios.$get<EvolutionChain>(
+          props.evolutionUrl
+        )
+        evolutions.value = await evolutionConverter(
+          evolutionChain,
+          props.pokemonName,
+          store.state.pokemon.cached
+        ).getEvolutions()
+        store.commit('pokemon/SET_POKEMON_EVOLUTIONS', evolutions.value)
+      } else {
+        evolutions.value = store.state.pokemon.data.evolutions
+      }
+      evolutions.value.forEach((e) => {
+        store.commit('pokemon/ADD_POKEMON_TO_CACHE', e)
+      })
     })
 
     return () => (
@@ -52,5 +66,6 @@ export default defineComponent({
       </div>
     )
   },
+  fetchOnServer: false,
 })
 </script>

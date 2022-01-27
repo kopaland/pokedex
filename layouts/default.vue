@@ -1,22 +1,7 @@
 <script lang="tsx">
-import {
-  defineComponent,
-  InjectionKey,
-  onMounted,
-  useStore,
-} from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, useStore } from '@nuxtjs/composition-api'
 import Hearder from '@/components/ui/Header.vue'
 import { StateStore } from '~/types'
-
-interface PokemonsData {
-  ids: number[]
-  lastIds: number[]
-  search: string
-  loading: boolean
-}
-
-export const PokemonsProvider: InjectionKey<PokemonsData> =
-  Symbol('PokemonsProvider')
 
 export default defineComponent({
   name: 'DefaultLayout',
@@ -37,7 +22,10 @@ export default defineComponent({
           <Hearder />
         </header>
         <main class="container mx-auto px-4">
-          <nuxt class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8" />
+          <nuxt
+            keep-alive
+            class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8"
+          />
         </main>
         <footer></footer>
       </div>

@@ -1,50 +1,48 @@
 <script lang="tsx">
 import {
   defineComponent,
-  InjectionKey,
-  reactive,
-  toRefs,
+  useAsync,
   useRoute,
   useStore,
 } from '@nuxtjs/composition-api'
 import _ from 'lodash'
-import { PokemonSpecies } from 'pokenode-ts'
 import { usePokemons } from '~/components/composables/api/usePokemons'
-import { StateStore } from '~/types'
+import { IPokemonData, StateStore } from '~/types'
 
 import PokemonStats from '~/components/ui/pokemon/PokemonStats.vue'
 import PokemonEvolutions from '~/components/ui/pokemon/PokemonEvolutions.vue'
-
-export const PokemonSpeciesProvider: InjectionKey<PokemonSpecies> = Symbol(
-  'PokemonSpeciesProvider'
-)
 
 export default defineComponent({
   name: 'PokemonInfos',
   setup() {
     const store = useStore<StateStore>()
     const route = useRoute()
-    const {
-      getPokemonById,
-      statePokemon,
-      getPokemonSpeciesById,
-      statePokemonSpecies,
-    } = usePokemons()
+    const { getPokemonById, statePokemon, getPokemonSpeciesById } =
+      usePokemons()
 
-    if (!store.state.pokemon.data) {
-      getPokemonById(Number(route.value.params.id)).then(() => {
-        store.commit('pokemon/SET_POKEMON', statePokemon.data)
-        store.commit('pokemon/ADD_POKEMON_TO_CACHE', statePokemon.data)
+    const pokemon = useAsync(() => {
+      return new Promise<IPokemonData>((resolve) => {
+        const pokemonId = Number(route.value.params.id)
+        if (store.state.pokemon.data?.id !== pokemonId) {
+          getPokemonById(pokemonId).then((data) => {
+            store.commit('pokemon/SET_POKEMON', data)
+            store.commit('pokemon/ADD_POKEMON_TO_CACHE', data)
+            resolve(data)
+          })
+        } else if (store.state.pokemon.data?.id === pokemonId) {
+          statePokemon.data = store.state.pokemon.data
+          resolve(statePokemon.data)
+        }
       })
-    } else {
-      statePokemon.data = store.state.pokemon.data
-    }
+    })
 
-    getPokemonSpeciesById(Number(route.value.params.id))
+    const pokemonSpecies = useAsync(() =>
+      getPokemonSpeciesById(Number(route.value.params.id))
+    )
 
     return {
-      pokemon: reactive(toRefs(statePokemon)),
-      pokemonSpecies: reactive(toRefs(statePokemonSpecies)),
+      pokemon,
+      pokemonSpecies,
     }
   },
   render() {
@@ -59,17 +57,14 @@ export default defineComponent({
           <div class="">
             <img
               class="rounded-t-lg p-8"
-              src={
-                this.pokemon.data?.sprites.other['official-artwork']
-                  .front_default
-              }
-              alt={this.pokemon.data?.name}
+              src={this.pokemon?.imageSrc}
+              alt={this.pokemon?.name}
             />
           </div>
           <div class="">
             <p class="flex flex-col">
               {_.uniqBy(
-                this.pokemonSpecies.data?.flavor_text_entries.filter(
+                this.pokemonSpecies?.flavor_text_entries.filter(
                   (f) => f.language.name === 'fr'
                 ),
                 (f) => {
@@ -80,14 +75,13 @@ export default defineComponent({
               })}
             </p>
           </div>
-          <PokemonStats value={this.pokemon.data?.stats} />
-          {this.pokemon.data?.name &&
-            this.pokemonSpecies.data?.evolution_chain.url && (
-              <PokemonEvolutions
-                pokemonName={this.pokemon.data?.name}
-                evolutionUrl={this.pokemonSpecies.data?.evolution_chain.url}
-              />
-            )}
+          <PokemonStats value={this.pokemon?.stats} />
+          {this.pokemon?.name && this.pokemonSpecies?.evolution_chain.url && (
+            <PokemonEvolutions
+              pokemonName={this.pokemon?.name}
+              evolutionUrl={this.pokemonSpecies?.evolution_chain.url}
+            />
+          )}
         </div>
       </div>
     )
