@@ -49,9 +49,9 @@ export default defineComponent({
     })
 
     return () => (
-      <div class="col-span-2">
+      <div class="pokemon-evolutions">
         <h2>Evolutions</h2>
-        <div class="flex gap-2">
+        <div>
           {evolutions.value.map((pokemon) => {
             if (pokemon.id)
               return (
@@ -69,3 +69,25 @@ export default defineComponent({
   fetchOnServer: false,
 })
 </script>
+<style lang="scss" scoped>
+.pokemon-evolutions {
+  & > div {
+    display: grid;
+    margin-top: 1.5rem;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    row-gap: 2.5rem;
+
+    @media (min-width: 640px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    @media (min-width: 1280px) {
+      column-gap: 2rem;
+    }
+  }
+}
+</style>

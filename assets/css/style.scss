@@ -1,0 +1,163 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+h1 {
+  font-size: 2.2em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.8em;
+}
+
+h4 {
+  font-size: 1.6em;
+}
+
+h5 {
+  font-size: 1.4em;
+}
+
+p {
+  font-size: 1.2em;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+  vertical-align: middle;
+}
+img {
+  border-style: solid;
+}
+
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+  -webkit-appearance: button;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  padding: 0;
+  line-height: inherit;
+  color: inherit;
+}
+button,
+[role='button'] {
+  cursor: pointer;
+}
+button {
+  background-color: transparent;
+  background-image: none;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.btn-back {
+  display: inline-flex;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  background-color: #3b82f6;
+  color: #ffffff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 1.5rem;
+  border-radius: 9999px;
+}
+
+.btn-outline {
+  padding: 0.5rem 1.5rem;
+  transition-property: background-color, border-color, color, fill, stroke,
+    opacity, box-shadow, transform;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  text-transform: uppercase;
+  border-radius: 9999px;
+  border-width: 2px;
+  border-color: #111827;
+  &:hover {
+    background-color: #1f2937;
+    color: #ffffff;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.btn-outline-light {
+  display: inline-flex;
+  padding: 0.5rem 1rem;
+  background-color: #ffffff;
+  transition-property: background-color, border-color, color, fill, stroke,
+    opacity, box-shadow, transform;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  display: inline-flex;
+  justify-content: center;
+  width: 100%;
+  border-radius: 0.375rem;
+  border-width: 1px;
+  border-color: #d1d5db;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  &:hover {
+    color: #6b7280;
+  }
+  &:focus {
+    border-color: #93c5fd;
+    outline: 0;
+  }
+  &:active {
+    background-color: #f9fafb;
+    color: #1f2937;
+  }
+}
+
+.input-increment-decrement {
+  text-align: center;
+  width: 2rem;
+}

@@ -14,7 +14,7 @@ const nuxtConfig: NuxtConfig = {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['@/assets/css/tailwind.css'],
+  css: ['@/assets/css/style.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
@@ -29,8 +29,6 @@ const nuxtConfig: NuxtConfig = {
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
-    // https://go.nuxtjs.dev/tailwindcss
-    '@nuxtjs/tailwindcss',
     '@nuxtjs/composition-api/module',
   ],
 

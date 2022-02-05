@@ -92,7 +92,7 @@ export default defineComponent({
   },
   render() {
     return (
-      <div class="">
+      <div class="homepage">
         <input
           vModel={this.debounceValue}
           onInput={(value: InputEvent) =>
@@ -100,9 +100,9 @@ export default defineComponent({
           }
           type="text"
           placeholder="Recherche..."
-          class="bg-gray-100 w-1/3 py-2 border-b-2 border-gray-600 outline-none focus:border-green-400"
+          class="homepage__search"
         />
-        <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+        <div class="homepage__results">
           {this.ids.map((id) => {
             return <PokemonCard idPokemon={id} searchTerm={this.searchTerm} />
           })}
@@ -112,3 +112,37 @@ export default defineComponent({
   },
 })
 </script>
+<style lang="scss" scoped>
+.homepage {
+  &__search {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    background-color: #f3f4f6;
+    width: 33.333333%;
+    border-bottom-width: 2px;
+    border-color: #4b5563;
+    outline: 0;
+    &:focus {
+      border-color: #34d399;
+    }
+  }
+  &__results {
+    display: grid;
+    margin-top: 1.5rem;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    row-gap: 2.5rem;
+
+    @media (min-width: 640px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    @media (min-width: 1280px) {
+      column-gap: 2rem;
+    }
+  }
+}
+</style>

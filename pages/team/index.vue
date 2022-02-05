@@ -1,8 +1,5 @@
 <script lang="tsx">
-import {
-  defineComponent,
-  useStore,
-} from '@nuxtjs/composition-api'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { StateStore } from '~/types'
 
 import PokemonCard from '@/components/ui/pokemon/PokemonCard.vue'
@@ -12,13 +9,12 @@ export default defineComponent({
   setup() {
     const store = useStore<StateStore>()
 
-    return () => <div class="">
+    return () => (
+      <div>
         <nuxt-link to="/">
-          <span class="inline-flex bg-blue-500 text-white rounded-full h-6 px-3 justify-center items-center">
-            Retour à la liste
-          </span>
+          <span class="btn-back">Retour à la liste</span>
         </nuxt-link>
-        <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+        <div class="my-team">
           {store.state.team.pokemons
             .filter((p) => p.id)
             .map((pokemon) => {
@@ -26,6 +22,27 @@ export default defineComponent({
             })}
         </div>
       </div>
+    )
   },
 })
 </script>
+<style lang="scss" scoped>
+.my-team {
+  display: grid;
+  margin-top: 1.5rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  column-gap: 1.5rem;
+  row-gap: 2.5rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  @media (min-width: 1280px) {
+    column-gap: 2rem;
+  }
+}
+</style>

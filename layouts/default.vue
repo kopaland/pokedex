@@ -17,15 +17,12 @@ export default defineComponent({
     })
 
     return () => (
-      <div class="app min-h-full bg-gray-100 font-sans w-full min-h-screen m-0">
+      <div class="app">
         <header>
           <Hearder />
         </header>
-        <main class="container mx-auto px-4">
-          <nuxt
-            keep-alive
-            class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8"
-          />
+        <main>
+          <nuxt keep-alive class="app__nuxt" />
         </main>
         <footer></footer>
       </div>
@@ -46,5 +43,36 @@ body {
 
 html {
   height: -webkit-fill-available;
+}
+
+header {
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.app {
+  margin: 0;
+  background-color: #f3f4f6;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  width: 100%;
+  min-height: 100%;
+  min-height: 100vh;
+
+  &__nuxt {
+    padding: 1rem 4rem;
+    max-width: 42rem;
+
+    @media (min-width: 640px) {
+      padding: 1.5rem 3rem;
+    }
+
+    @media (min-width: 1024px) {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 80rem;
+    }
+  }
 }
 </style>

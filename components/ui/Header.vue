@@ -7,28 +7,13 @@ export default defineComponent({
   name: 'UIHeader',
   setup() {
     return () => (
-      <div class="bg-white shadow">
-        <div class="container mx-auto px-4">
-          <div class="flex items-center justify-between py-4">
-            <div>
-              <img src="~/assets/pokedex-logo.png" />
-            </div>
-
-            <div class="hidden sm:flex sm:items-center">
-              <PokemonDropdownList />
-            </div>
-
-            <div class="sm:hidden cursor-pointer">
-              <img src="~/assets/pokedex-logo.png" />
-            </div>
+      <div class="header">
+        <div class="header__container">
+          <div class="header__container__logo">
+            <img src={require('~/assets/pokedex-logo.png')} />
           </div>
-
-          <div class="block sm:hidden bg-white py-2">
-            <div class="flex flex-col">
-              <div class="flex justify-between items-center pt-2">
-                <PokemonDropdownList />
-              </div>
-            </div>
+          <div class="header__container__dropdown">
+            <PokemonDropdownList />
           </div>
         </div>
       </div>
@@ -36,3 +21,29 @@ export default defineComponent({
   },
 })
 </script>
+<style lang="scss" scoped>
+.header {
+  width: 100%;
+  padding: 0 1rem;
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+
+    @media (min-width: 640px) {
+      padding: 1rem 0;
+    }
+    &__logo {
+      max-width: 5rem;
+    }
+    &__dropdown {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 0.5rem;
+      justify-content: space-between;
+    }
+  }
+}
+</style>

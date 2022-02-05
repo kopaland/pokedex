@@ -14,19 +14,17 @@ export default defineComponent({
   },
   setup(props) {
     return () => (
-      <div class="col-span-2 flex flex-col gap-2">
+      <div class="pokemon-stats">
+        <h2>Statistiques</h2>
         {props.value.map((item) => {
           const ref = item.stat.name === 'speed' ? 300 : 255
           return (
             <div>
-              <h1>{item.stat.name}</h1>
-              <div class="h-8 relative rounded-full overflow-hidden">
-                <div class="w-full h-full bg-gray-200 absolute "></div>
-                <div
-                  class="flex items-center h-full bg-red-500 sm:bg-yellow-400 absolute"
-                  style={`width: ${(item.base_stat / ref) * 100}%`}
-                >
-                  <span class="ml-4">
+              <h5>{item.stat.name}</h5>
+              <div class="pokemon-stats__gauge">
+                <div />
+                <div style={`width: ${(item.base_stat / ref) * 100}%`}>
+                  <span>
                     {item.base_stat} / {ref}
                   </span>
                 </div>
@@ -39,3 +37,34 @@ export default defineComponent({
   },
 })
 </script>
+<style lang="scss" scoped>
+.pokemon-stats {
+  display: flex;
+  flex-direction: column;
+  h5 {
+    text-transform: uppercase;
+  }
+  &__gauge {
+    overflow: hidden;
+    position: relative;
+    height: 2rem;
+    border-radius: 9999px;
+    & > div:nth-child(1) {
+      position: absolute;
+      background-color: #e5e7eb;
+      width: 100%;
+      height: 100%;
+    }
+    & > div:nth-child(2) {
+      display: flex;
+      position: absolute;
+      background-color: #fbbf24;
+      align-items: center;
+      height: 100%;
+      & > span {
+        margin-left: 1rem;
+      }
+    }
+  }
+}
+</style>

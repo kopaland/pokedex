@@ -49,20 +49,14 @@ export default defineComponent({
     return (
       <div>
         <nuxt-link to="/">
-          <span class="inline-flex bg-blue-500 text-white rounded-full h-6 px-3 justify-center items-center">
-            Retour à la liste
-          </span>
+          <span class="btn-back">Retour à la liste</span>
         </nuxt-link>
-        <div class="grid grid-cols-1 md:grid-cols-2 grid-rows-4 gap-4">
-          <div class="">
-            <img
-              class="rounded-t-lg p-8"
-              src={this.pokemon?.imageSrc}
-              alt={this.pokemon?.name}
-            />
+        <div class="pokemon">
+          <div class="pokemon__image">
+            <img src={this.pokemon?.imageSrc} alt={this.pokemon?.name} />
           </div>
-          <div class="">
-            <p class="flex flex-col">
+          <div class="pokemon__resume">
+            <p>
               {_.uniqBy(
                 this.pokemonSpecies?.flavor_text_entries.filter(
                   (f) => f.language.name === 'fr'
@@ -75,11 +69,12 @@ export default defineComponent({
               })}
             </p>
           </div>
-          <PokemonStats value={this.pokemon?.stats} />
+          <PokemonStats value={this.pokemon?.stats} class="pokemon__stats" />
           {this.pokemon?.name && this.pokemonSpecies?.evolution_chain.url && (
             <PokemonEvolutions
               pokemonName={this.pokemon?.name}
               evolutionUrl={this.pokemonSpecies?.evolution_chain.url}
+              class="pokemon__evos"
             />
           )}
         </div>
@@ -88,3 +83,32 @@ export default defineComponent({
   },
 })
 </script>
+<style lang="scss" scoped>
+.pokemon {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  &__image {
+    padding: 2rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+  }
+  &__resume > p {
+    display: flex;
+    flex-direction: column;
+  }
+  &__stats {
+    grid-column: span 2 / span 2;
+    gap: 0.5rem;
+  }
+  &__evos {
+    grid-column: span 2 / span 2;
+  }
+}
+</style>

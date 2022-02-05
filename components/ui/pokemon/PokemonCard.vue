@@ -10,7 +10,8 @@ import {
 import { usePokemons } from '~/components/composables/api/usePokemons'
 import { IPokemonTeamStore, StateStore } from '~/types'
 
-import IncremenDecrementButtons from '@/components/ui/IncremenDecrementButtons.vue'
+import SkeletonLoader from '@/components/ui/SkeletonLoader.vue'
+import IncrementDecrementButtons from '~/components/ui/IncrementDecrementButtons.vue'
 
 export default defineComponent({
   name: 'UIPokemonCard',
@@ -87,64 +88,53 @@ export default defineComponent({
     )
 
     return () => (
-      <div class="group relative" vShow={showCard.value}>
+      <div class="pokemon-card" vShow={showCard.value}>
         {statePokemon.loading ? (
-          <div class="bg-white shadow-md rounded-lg max-w-sm dark:bg-gray-800 dark:border-gray-700">
-            <div class="flex animate-pulse flex-row items-center h-full justify-center space-x-5">
-              <div class="bg-gray-300 rounded-md p-32 my-4 space-y-3"></div>
-            </div>
-          </div>
+          <SkeletonLoader />
         ) : (
-          <div class="bg-white shadow-md rounded-lg max-w-sm dark:bg-gray-800 dark:border-gray-700">
+          <div class="pokemon-card__body">
             <nuxt-link to={`/pokemon/${props.idPokemon}`}>
               <img
-                class="transform hover:scale-125 rounded-t-lg p-8"
+                class="pokemon-card__image"
                 src={pokemon.value?.imageSrc}
                 alt={pokemon.value?.name}
                 onClick={setPokemonStore}
               />
             </nuxt-link>
-            <div class="px-5 pb-5">
+            <div class="pokemon-card__infos">
               <a href="#">
-                <h3 class="text-gray-900 capitalize font-semibold text-xl tracking-tight dark:text-white">
+                <h3 class="pokemon-card__infos__name">
                   {pokemon.value?.name} {pokemon.value?.evolveOrder}
                 </h3>
               </a>
-              <div class="flex items-center gap-2">
+              <div class="pokemon-card__infos__types">
                 {pokemon.value?.types.map((type) => {
-                  return (
-                    <span class="inline-flex bg-pink-600 text-white rounded-full h-6 px-3 justify-center items-center">
-                      {type}
-                    </span>
-                  )
+                  return <span>{type}</span>
                 })}
               </div>
             </div>
             {route.value.name !== 'team' ? (
-              <div class="p-4 flex flex-col md:flex-row justify-center text-gray-900">
-                <button
-                  class="px-6 py-2 transition ease-in duration-200 uppercase rounded-full hover:bg-gray-800 hover:text-white border-2 border-gray-900 focus:outline-none"
-                  onClick={addToTeam}
-                >
+              <div class="pokemon-card__add-to-team">
+                <button class="btn-outline" onClick={addToTeam}>
                   Ajouter à mon équipe
                 </button>
               </div>
             ) : (
               <div>
-                <IncremenDecrementButtons
+                <IncrementDecrementButtons
                   disabled={disabled.value}
                   onClickPlusOrMinus={updatePosition}
                 >
                   <p slot="title">Position</p>
-                </IncremenDecrementButtons>
-                <IncremenDecrementButtons onClickPlusOrMinus={updateQuantity}>
+                </IncrementDecrementButtons>
+                <IncrementDecrementButtons onClickPlusOrMinus={updateQuantity}>
                   <p slot="title">Quantité</p>
                   <input
                     value={quantity.value}
                     disabled
-                    class="w-8 text-center"
+                    class="input-increment-decrement"
                   />
-                </IncremenDecrementButtons>
+                </IncrementDecrementButtons>
               </div>
             )}
           </div>
@@ -154,3 +144,62 @@ export default defineComponent({
   },
 })
 </script>
+<style lang="scss" scoped>
+.pokemon-card {
+  &__body {
+    background-color: #ffffff;
+    max-width: 24rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  &__image {
+    padding: 2rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    &:hover {
+      transform: scaleX(1.25) scaleY(1.25);
+    }
+  }
+  &__infos {
+    padding: 1.25rem;
+    padding-top: 0;
+    &__name {
+      color: #111827;
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      text-transform: capitalize;
+    }
+    &__types {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      & > span {
+        display: inline-flex;
+        padding: 0 0.75rem;
+        background-color: #db2777;
+        color: #ffffff;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        height: 1.5rem;
+        border-radius: 9999px;
+      }
+    }
+  }
+  &__add-to-team {
+    display: flex;
+    padding: 1rem;
+    color: #111827;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
+  }
+}
+</style>

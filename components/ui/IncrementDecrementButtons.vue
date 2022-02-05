@@ -2,7 +2,7 @@ vue
 <script lang="tsx">
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
 
-interface IIncremenDecrementButtonsProps {
+interface IIncrementDecrementButtonsProps {
   disabled: {
     plus: boolean
     minus: boolean
@@ -10,10 +10,10 @@ interface IIncremenDecrementButtonsProps {
 }
 
 export default defineComponent({
-  name: 'UIIncremenDecrementButtons',
+  name: 'UIIncrementDecrementButtons',
   props: {
     disabled: {
-      type: Object as PropType<IIncremenDecrementButtonsProps['disabled']>,
+      type: Object as PropType<IIncrementDecrementButtonsProps['disabled']>,
       default: () => {
         return {
           plus: false,
@@ -32,18 +32,17 @@ export default defineComponent({
     }
 
     return () => (
-      <div class="p-4 flex justify-between">
+      <div class="increment-decrement">
         {slots.title && slots.title()}
-        <div class="flex">
+        <div>
           <button
             disabled={props.disabled.plus}
             type="button"
-            class="bg-green-600 p-1.5 font-bold rounded"
+            class="increment-decrement__btn-plus"
             onClick={() => handleClick(1)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -59,11 +58,10 @@ export default defineComponent({
             disabled={props.disabled.minus}
             type="button"
             onClick={() => handleClick(-1)}
-            class="bg-yellow-600 p-1.5 font-bold rounded"
+            class="increment-decrement__btn-minus"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -80,3 +78,29 @@ export default defineComponent({
   },
 })
 </script>
+<style lang="scss" scoped>
+.increment-decrement {
+  display: inline-grid;
+  padding: 1rem;
+  & > div {
+    display: flex;
+    button {
+      padding: 0.375rem;
+      font-weight: 700;
+      border-radius: 0.25rem;
+      width: 2rem;
+      height: 2rem;
+      & > svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+  }
+  &__btn-plus {
+    background-color: #059669;
+  }
+  &__btn-minus {
+    background-color: #d97706;
+  }
+}
+</style>
