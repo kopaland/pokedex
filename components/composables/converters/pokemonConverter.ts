@@ -8,8 +8,11 @@ export function pokemonConverter(pokemon: Pokemon) {
     evolveOrder: `#${pokemon.order}`,
     imageSrc: pokemon.sprites.other['official-artwork'].front_default,
     types: pokemon.types.map((item) => item.type.name),
-    stats: pokemon.stats,
-    evolutions: []
+    stats: pokemon.stats.map((item) => ({
+      name: item.stat.name,
+      base: item.base_stat,
+    })),
+    evolutions: [],
   }
 
   return { pokemonData }

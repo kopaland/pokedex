@@ -20,6 +20,8 @@ const nuxtConfig: NuxtConfig = {
   plugins: [
     '~/plugins/pokenode-api.ts',
     '~/plugins/backup.ts',
+    '~/plugins/modal.ts',
+    '~/plugins/alert.ts',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -51,6 +53,10 @@ const nuxtConfig: NuxtConfig = {
     manifest: {
       lang: 'fr',
     },
+  },
+
+  env: {
+    customApi: process.env.CUSTOM_API || 'http://localhost:4000/v1'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

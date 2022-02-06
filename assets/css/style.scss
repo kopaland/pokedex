@@ -123,6 +123,11 @@ textarea {
   &:focus {
     outline: none;
   }
+  &:disabled {
+    background-color: #d1d5db;
+    cursor: not-allowed;
+    color: initial;
+  }
 }
 
 .btn-outline-light {
@@ -155,9 +160,90 @@ textarea {
     background-color: #f9fafb;
     color: #1f2937;
   }
+  &:disabled {
+    background-color: #d1d5db;
+    cursor: not-allowed;
+    color: initial;
+  }
+}
+
+.btn-cancel {
+  padding: 0.5rem 1.5rem;
+  transition-property: background-color, border-color, color, fill, stroke,
+    opacity, box-shadow, transform;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  text-transform: uppercase;
+  border-radius: 9999px;
+  border-width: 2px;
+  border-color: #111827;
+  &:hover {
+    background-color: #3b82f6;
+    color: #ffffff;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:disabled {
+    background-color: #d1d5db;
+    cursor: not-allowed;
+    color: initial;
+  }
+}
+
+.btn-publish {
+  padding: 0.5rem 1.5rem;
+  transition-property: background-color, border-color, color, fill, stroke,
+    opacity, box-shadow, transform;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  text-transform: uppercase;
+  border-radius: 9999px;
+  border-width: 2px;
+  border-color: #111827;
+  &:hover {
+    background-color: #db2777;
+    color: #ffffff;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:disabled {
+    background-color: #d1d5db;
+    cursor: not-allowed;
+    color: initial;
+  }
 }
 
 .input-increment-decrement {
   text-align: center;
   width: 2rem;
+}
+
+.card-body {
+  background-color: #ffffff;
+  max-width: 24rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-image {
+  padding: 2rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  &:hover {
+    transform: scaleX(1.25) scaleY(1.25);
+  }
+}
+
+.card-infos {
+  padding: 1.25rem;
+  padding-top: 0;
+  color: #111827;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  text-transform: capitalize;
 }

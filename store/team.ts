@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex'
-import { StateStore, IPokemonData, IPokemonTeamStore } from '~/types'
+import { StateStore, IPokemonData, IPokemonTeamStore, ITrainer } from '~/types'
 
 type OrderMutation = {
   id: number
@@ -8,10 +8,22 @@ type OrderMutation = {
 
 export const state = () =>
   ({
+    id: null,
+    trainerId: null,
+    trainerPseudo: null,
     pokemons: [],
   } as StateStore['team'])
 
 export const mutations: MutationTree<StateStore['team']> = {
+  SET_ID: (state, id: number) => {
+    state.id = id
+    updateLocalStorage(state)
+  },
+  SET_TRAINER: (state, trainer: ITrainer) => {
+    state.trainerId = trainer.id
+    state.trainerPseudo = trainer.pseudo
+    updateLocalStorage(state)
+  },
   SWITCH_POKEMON_TO_TEAM: (state, value: IPokemonData) => {
     const index = state.pokemons.findIndex((p) => p.id === value.id)
     if (index === -1)
@@ -21,7 +33,7 @@ export const mutations: MutationTree<StateStore['team']> = {
         position: state.pokemons.length + 1,
       })
     else state.pokemons.splice(index, 1)
-    updateLocalStorage(state.pokemons)
+    updateLocalStorage(state)
   },
   ADD_POKEMON_TO_TEAM: (state, value: IPokemonData) => {
     const index = state.pokemons.findIndex((p) => p.id === value.id)
@@ -32,12 +44,12 @@ export const mutations: MutationTree<StateStore['team']> = {
         position: state.pokemons.length + 1,
       })
     else state.pokemons[index].quantity++
-    updateLocalStorage(state.pokemons)
+    updateLocalStorage(state)
   },
   REMOVE_POKEMON_TO_TEAM: (state, id: number) => {
     const index = state.pokemons.findIndex((p) => p.id === id)
     state.pokemons.splice(index, 1)
-    updateLocalStorage(state.pokemons)
+    updateLocalStorage(state)
   },
   UPDATE_ORDER_POKEMON_TO_TEAM: (state, order: OrderMutation) => {
     const index = state.pokemons.findIndex((p) => p.id === order.id)
@@ -47,7 +59,7 @@ export const mutations: MutationTree<StateStore['team']> = {
         0,
         state.pokemons.splice(index, 1)[0]
       )
-    updateLocalStorage(state.pokemons)
+    updateLocalStorage(state)
   },
   UPDATE_POKEMON_QUANTITY_TO_TEAM: (state, order: OrderMutation) => {
     const index = state.pokemons.findIndex((p) => p.id === order.id)
@@ -60,14 +72,13 @@ export const mutations: MutationTree<StateStore['team']> = {
         state.pokemons[index].quantity++
         break
     }
-    updateLocalStorage(state.pokemons)
+    updateLocalStorage(state)
   },
-  RECOVER_BACKUP: (state, backup: IPokemonTeamStore[]) => {
-    state.pokemons = []
-    state.pokemons = backup
+  RECOVER_BACKUP: (state, backup: StateStore['team']) => {
+    state = { ...backup }
   },
 }
 
-function updateLocalStorage(pokemons: IPokemonTeamStore[]) {
-  localStorage.setItem('team', JSON.stringify(pokemons))
+function updateLocalStorage(team: StateStore['team']) {
+  localStorage.setItem('team', JSON.stringify(team))
 }

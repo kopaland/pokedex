@@ -20,9 +20,8 @@ export default defineComponent({
             aria-haspopup="true"
             aria-expanded="true"
             aria-controls="headlessui-menu-items-117"
-            disabled={store.state.team.pokemons.length === 0}
           >
-            <span>Mon équipe</span>
+            <span>Equipes</span>
             <svg viewBox="0 0 20 20" fill="currentColor">
               <path
                 fill-rule="evenodd"
@@ -80,14 +79,18 @@ export default defineComponent({
             {store.state.team.pokemons.length > 5 && (
               <div class="pokemon-dropdown__row">...</div>
             )}
-            <div class="pokemon-dropdown__my-team">
+            <div class="pokemon-dropdown__team">
               <nuxt-link
-                to="/team"
+                to="/my-team"
                 tabindex="3"
-                class="pokemon-dropdown__my-team"
                 role="menuitem"
               >
                 Voir mon équipe
+              </nuxt-link>
+            </div>
+            <div class="pokemon-dropdown__team">
+              <nuxt-link to="/teams">
+                Voir d'autres équipes
               </nuxt-link>
             </div>
           </div>
@@ -180,7 +183,7 @@ export default defineComponent({
       cursor: pointer;
     }
   }
-  &__my-team {
+  &__team {
     display: flex;
     padding: 0.5rem 1rem;
     color: #374151;

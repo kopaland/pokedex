@@ -92,10 +92,10 @@ export default defineComponent({
         {statePokemon.loading ? (
           <SkeletonLoader />
         ) : (
-          <div class="pokemon-card__body">
+          <div class="card-body">
             <nuxt-link to={`/pokemon/${props.idPokemon}`}>
               <img
-                class="pokemon-card__image"
+                class="card-image"
                 src={pokemon.value?.imageSrc}
                 alt={pokemon.value?.name}
                 onClick={setPokemonStore}
@@ -113,7 +113,7 @@ export default defineComponent({
                 })}
               </div>
             </div>
-            {route.value.name !== 'team' ? (
+            {route.value.name !== 'my-team' ? (
               <div class="pokemon-card__add-to-team">
                 <button class="btn-outline" onClick={addToTeam}>
                   Ajouter à mon équipe
@@ -146,21 +146,6 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .pokemon-card {
-  &__body {
-    background-color: #ffffff;
-    max-width: 24rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-      0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
-  &__image {
-    padding: 2rem;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
-    &:hover {
-      transform: scaleX(1.25) scaleY(1.25);
-    }
-  }
   &__infos {
     padding: 1.25rem;
     padding-top: 0;

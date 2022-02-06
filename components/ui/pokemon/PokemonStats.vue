@@ -1,12 +1,12 @@
 <script lang="tsx">
 import { PropType, defineComponent } from '@vue/composition-api'
-import { PokemonStat } from 'pokenode-ts'
+import { PokemonStats } from '~/types'
 
 export default defineComponent({
   name: 'UIPokemonStats',
   props: {
     value: {
-      type: Array as PropType<PokemonStat[]>,
+      type: Array as PropType<PokemonStats[]>,
       default: () => {
         return []
       },
@@ -17,15 +17,15 @@ export default defineComponent({
       <div class="pokemon-stats">
         <h2>Statistiques</h2>
         {props.value.map((item) => {
-          const ref = item.stat.name === 'speed' ? 300 : 255
+          const ref = item.name === 'speed' ? 300 : 255
           return (
             <div>
-              <h5>{item.stat.name}</h5>
+              <h5>{item.name}</h5>
               <div class="pokemon-stats__gauge">
                 <div />
-                <div style={`width: ${(item.base_stat / ref) * 100}%`}>
+                <div style={`width: ${(item.base / ref) * 100}%`}>
                   <span>
-                    {item.base_stat} / {ref}
+                    {item.base} / {ref}
                   </span>
                 </div>
               </div>

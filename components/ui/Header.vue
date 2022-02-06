@@ -9,9 +9,11 @@ export default defineComponent({
     return () => (
       <div class="header">
         <div class="header__container">
-          <div class="header__container__logo">
-            <img src={require('~/assets/pokedex-logo.png')} />
-          </div>
+          <nuxt-link to="/">
+            <div class="header__container__logo">
+              <img src={require('~/assets/pokedex-logo.png')} />
+            </div>
+          </nuxt-link>
           <div class="header__container__dropdown">
             <PokemonDropdownList />
           </div>

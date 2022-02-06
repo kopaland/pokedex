@@ -13,10 +13,26 @@ interface Backup {
   }
 }
 
+interface Modal {
+  show: boolean
+  target: 'team'
+  header: any
+  body: any
+  footer: any
+}
+
+interface Alert {
+  show: boolean
+  type: 'ERROR' | 'SUCCESS' | 'WARNING' | 'INFO'
+  message: any
+}
+
 declare module 'vue/types/vue' {
   interface Vue {
     $pokenodeApi: PokenodeApi
     $backup: Backup
+    $modal: Modal
+    $alert: Alert
   }
 }
 
@@ -24,9 +40,13 @@ declare module '@nuxt/types' {
   interface Context {
     $pokenodeApi: PokenodeApi
     $backup: Backup
+    $modal: Modal
+    $alert: Alert
   }
   interface NuxtAppOptions {
     $pokenodeApi: PokenodeApi
     $backup: Backup
+    $modal: Modal
+    $alert: Alert
   }
 }
