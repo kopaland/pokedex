@@ -51,8 +51,7 @@ export default defineComponent({
           ? localStorage.getItem('team') ?? '{}'
           : '{}'
       store.commit('team/RECOVER_BACKUP', JSON.parse(teamPokemons))
-      if (!showTrainerModal.value)
-        setTimeout(() => (showTrainerModal.value = true), 25000)
+      setTimeout(() => (showTrainerModal.value = true), 25000)
     })
 
     function publishMyTeam() {
