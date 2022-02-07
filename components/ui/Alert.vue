@@ -15,7 +15,7 @@ export default defineComponent({
       default: 'ERROR',
     },
   },
-  setup(props, { emit, slots }) {
+  setup(props, { slots }) {
     const svg = computed(() => {
       const attrs = {
         dataIcon: '',
@@ -58,29 +58,21 @@ export default defineComponent({
       )
     })
 
-    return () => (
-      <div>
-        {props.show && (
-          <div class={`alert__${props.type.toLowerCase()}`} role="alert">
-            {svg.value}
-            {slots.default && slots.default()}
-          </div>
-        )}
-      </div>
-    )
+    return () =>
+      props.show && (
+        <div class={`alert alert__${props.type.toLowerCase()}`} role="alert">
+          {svg.value}
+          {slots.default && slots.default()}
+        </div>
+      )
   },
 })
 </script>
 <style lang="scss" scoped>
 .alert {
-  display: inline-flex;
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  align-items: center;
-  width: 100%;
-  border-radius: 0.5rem;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
   & > svg {
     margin-right: 0.5rem;
     width: 1rem;

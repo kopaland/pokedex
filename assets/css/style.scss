@@ -247,3 +247,13 @@ textarea {
   letter-spacing: -0.025em;
   text-transform: capitalize;
 }
+
+.alert {
+  display: inline-flex;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  align-items: center;
+  border-radius: 0.5rem;
+}

@@ -138,7 +138,7 @@ export default defineComponent({
             </div>
           </TrainerModal>
           <Alert show={showAlert.value} type={$alert.type}>
-            <p>{$alert.message}</p>
+            {$alert.message}
           </Alert>
         </main>
         <footer></footer>

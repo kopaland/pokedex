@@ -17,7 +17,7 @@ export default defineComponent({
             <nuxt-link to={`/trainers/${props.trainer.id}`}>
               <img
                 class="card-image"
-                src="https://source.unsplash.com/random/250×250/?pokemon"
+                src={`https://picsum.photos/250/250?random=${props.trainer.id}`}
                 alt="ramdom image"
               />
             </nuxt-link>
